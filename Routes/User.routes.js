@@ -22,7 +22,7 @@ UserRouter.post("/signup", async (req, res) => {
           password: hash,
         });
         const saveSignup = newSignup.save();
-        res.status(201).send({ message: "Signup Successfully", saveSignup });
+        res.status(201).send({ message: "Signup Successfully" });
       }
     });
   }
@@ -31,11 +31,12 @@ UserRouter.post("/signup", async (req, res) => {
 UserRouter.post("/login", async (req, res) => {
   const { email, password } = req.body;
   const user = await UserModel.findOne({ email });
-  const hash = user.hash;
+  const hash = user.password;
 
-  bcrypt.compare(password, hash, async (err, result) => {
+  bcrypt.compare(password, hash, (err, result) => {
     if (err) {
-      res.status(500).send({ message: "Something wrong with login" });
+      console.log(err);
+      res.status(500).send({ message: "Something wrong with login", err });
     }
     if (result) {
       const expiresIn = "1d";

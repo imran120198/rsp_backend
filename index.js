@@ -15,7 +15,7 @@ app.get("/", (req, res) => {
   res.send("Welcome to Recipe Sharing Platform Server");
 });
 
-app.use("/user", UserRouter)
+app.use("/user", UserRouter);
 
 app.listen(process.env.PORT, async () => {
   try {
