@@ -5,6 +5,7 @@ require("dotenv").config();
 // Import
 const { connection } = require("./Connection/Connection");
 const { UserRouter } = require("./Routes/User.routes");
+const { RecipeRouter } = require("./Routes/Recipe.routes");
 
 const app = express();
 app.use(express.json());
@@ -16,6 +17,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/user", UserRouter);
+app.use("/recipe", RecipeRouter);
 
 app.listen(process.env.PORT, async () => {
   try {
