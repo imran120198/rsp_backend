@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const { RecipeModel } = require("../Models/Recipe.model");
 const { authentication } = require("../Middleware/Authentication");
+const { UserAuthentication } = require("../Middleware/UserAuthentication");
 
 const RecipeRouter = Router();
 
@@ -29,7 +30,16 @@ RecipeRouter.get("/:recipeId", async (req, res) => {
 // Authenticate User Only
 
 // Get All the blog Data by user
-
+RecipeRouter.get("/myrecipe", authentication, UserAuthentication, async (req, res) => {
+    try {
+      const result = await RecipeModel.find();
+      res.status(201).send(result);
+    } catch (err) {
+      console.log(err);
+      res.status(500).send({ message: "Error in getting data", err });
+    }
+  }
+);
 
 module.exports = {
   RecipeRouter,
