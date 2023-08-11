@@ -15,6 +15,21 @@ RecipeRouter.get("/", async (req, res) => {
   }
 });
 
+// Show Recipe Data by Id
+RecipeRouter.get("/:recipeId", async (req, res) => {
+  try {
+    const result = await RecipeModel.findOne({ _id: req.params.recipeId });
+    res.status(201).send(result);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err);
+  }
+});
+
+// Authenticate User Only
+
+// Get All the blog Data by user
+
 
 module.exports = {
   RecipeRouter,
