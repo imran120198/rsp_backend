@@ -30,13 +30,42 @@ RecipeRouter.get("/:recipeId", async (req, res) => {
 // Authenticate User Only
 
 // Get All the blog Data by user
-RecipeRouter.get("/myrecipe", authentication, UserAuthentication, async (req, res) => {
+RecipeRouter.get(
+  "/myrecipe",
+  authentication,
+  UserAuthentication,
+  async (req, res) => {
     try {
       const result = await RecipeModel.find();
       res.status(201).send(result);
     } catch (err) {
       console.log(err);
       res.status(500).send({ message: "Error in getting data", err });
+    }
+  }
+);
+
+// Post the recipe
+RecipeRouter.post(
+  "/create",
+  authentication,
+  async (req, res) => {
+    try {
+      const { name, category, image, description, cookingtime } = req.body;
+      const CreateRecipe = new RecipeModel({
+        name,
+        category,
+        image,
+        description,
+        cookingtime,
+      });
+      await CreateRecipe.save();
+      res.status(201).send(CreateRecipe);
+    } catch (err) {
+      console.log(err);
+      res
+        .status(500)
+        .send({ message: "Something wrong with Create Data", err });
     }
   }
 );
