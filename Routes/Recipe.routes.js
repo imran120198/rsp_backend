@@ -46,29 +46,37 @@ RecipeRouter.get(
 );
 
 // Post the recipe
-RecipeRouter.post(
-  "/create",
-  authentication,
-  async (req, res) => {
-    try {
-      const { name, category, image, description, cookingtime } = req.body;
-      const CreateRecipe = new RecipeModel({
-        name,
-        category,
-        image,
-        description,
-        cookingtime,
-      });
-      await CreateRecipe.save();
-      res.status(201).send(CreateRecipe);
-    } catch (err) {
-      console.log(err);
-      res
-        .status(500)
-        .send({ message: "Something wrong with Create Data", err });
-    }
+RecipeRouter.post("/create", authentication, async (req, res) => {
+  try {
+    const { name, category, image, description, cookingtime } = req.body;
+    const CreateRecipe = new RecipeModel({
+      name,
+      category,
+      image,
+      description,
+      cookingtime,
+    });
+    await CreateRecipe.save();
+    res.status(201).send(CreateRecipe);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ message: "Something wrong with Create Data", err });
   }
-);
+});
+
+// Delete
+RecipeRouter.delete("/delete/:recipeId", authentication, async (req, res) => {
+  const { recipeId } = req.params;
+  const deleteRecipe = await RecipeModel.findOneAndDelete({
+    _id: recipeId,
+    userId: req.body.userId,
+  });
+  if (deleteRecipe) {
+    res.status(201).send({ msg: "deleted" });
+  } else {
+    res.status(500).send({ msg: "blog not found" });
+  }
+});
 
 module.exports = {
   RecipeRouter,
