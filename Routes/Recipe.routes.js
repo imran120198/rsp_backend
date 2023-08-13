@@ -64,6 +64,20 @@ RecipeRouter.post("/create", authentication, async (req, res) => {
   }
 });
 
+//Patch the data
+RecipeRouter.patch("/edit/:recipeId", async (req, res) => {
+  const { recipeId } = req.params;
+  try {
+    const EditRecipe = await BlogModel.findByIdAndUpdate(
+      { _id: recipeId },
+      req.body
+    );
+    res.status(201).send({ message: "Edit Successfully", EditRecipe });
+  } catch (err) {
+    res.status(500).send({ message: "Error in Edit", err });
+  }
+});
+
 // Delete
 RecipeRouter.delete("/delete/:recipeId", authentication, async (req, res) => {
   const { recipeId } = req.params;
