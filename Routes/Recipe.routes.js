@@ -62,7 +62,7 @@ RecipeRouter.post("/create", authentication, async (req, res) => {
 RecipeRouter.patch("/edit/:recipeId", authentication, async (req, res) => {
   const { recipeId } = req.params;
   try {
-    const EditRecipe = await BlogModel.findByIdAndUpdate(
+    const EditRecipe = await RecipeModel.findByIdAndUpdate(
       { _id: recipeId },
       req.body
     );
@@ -77,12 +77,11 @@ RecipeRouter.delete("/delete/:recipeId", authentication, async (req, res) => {
   const { recipeId } = req.params;
   const deleteRecipe = await RecipeModel.findOneAndDelete({
     _id: recipeId,
-    userId: req.body.userId,
   });
   if (deleteRecipe) {
     res.status(201).send({ msg: "deleted" });
   } else {
-    res.status(500).send({ msg: "blog not found" });
+    res.status(500).send({ msg: "Recipe not found" });
   }
 });
 
